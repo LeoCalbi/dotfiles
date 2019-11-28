@@ -24,11 +24,15 @@ choco install whatsapp
 choco install telegram
 choco install spotify
 choco install peazip
+
+
+#Easy Life Programs
 choco install everything
 choco install vox -i
 choco install quicklook
+choco install edgedeflector
 
-
+#Developer stuff
 choco install vscode
 choco install powershell-core
 choco install git.install
