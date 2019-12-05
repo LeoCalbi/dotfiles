@@ -69,7 +69,7 @@ function disable-windows-search {
 # 	7z x "-o$outputDir" $file
 # }
 
-set-alias unzip expand-archive
+#set-alias unzip expand-archive
 
 function get-path {
 	($Env:Path).Split(";")
@@ -80,10 +80,10 @@ function Test-FileInSubPath([System.IO.DirectoryInfo]$Child, [System.IO.Director
 	$Child.FullName.StartsWith($Parent.FullName)
 }
 
-function stree {
-	$SourceTreeFolder = get-childitem ("${env:LOCALAPPDATA}" + "\SourceTree\app*") | Select-Object -first 1
-	& $SourceTreeFolder/SourceTree.exe -f .
-}
+#function stree {
+#	$SourceTreeFolder = get-childitem ("${env:LOCALAPPDATA}" + "\SourceTree\app*") |  Select-Object -first 1
+#	& $SourceTreeFolder/SourceTree.exe -f .
+#}
 
 function get-serial-number {
 	Get-CimInstance -ClassName Win32_Bios | Select-Object serialnumber

@@ -9,7 +9,7 @@ choco install javaruntime -n
 choco pin add -n=javaruntime
 
 #User programs
-choco install adobereader
+choco install adobereader -i
 choco install googlechrome
 choco install vlc
 choco install calibre
@@ -54,8 +54,13 @@ choco install microsoft-windows-terminal
 #Node installation
 nvm install latest
 
+npm install -g windows-build-tools
+
 
 #Powershell 6 modules install
 Set-PSRepository -name PSGallery -InstallationPolicy Trusted
 Install-Module Pscx -Scope CurrentUser
 Install-Module -Name Recycle -Scope CurrentUser
+Install-Module posh-git -Scope CurrentUser
+Install-Module oh-my-posh -Scope CurrentUser
+Install-Module -Name PSReadLine -AllowPrerelease -Scope CurrentUser -Force -SkipPublisherCheck
