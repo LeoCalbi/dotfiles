@@ -16,6 +16,7 @@ choco install calibre
 choco install sublimetext3
 choco install steam
 choco install google-backup-and-sync
+choco install chrome-remote-desktop-host
 choco install pdf24
 choco install geforce-game-ready-driver
 choco install utorrent
