@@ -46,7 +46,7 @@ choco install curl
 choco install nuget.commandline
 choco install nvm.portable
 choco install ruby
-choco install vim
+#choco install vim
 choco install webpi
 #choco install eclipse
 choco install speccy
