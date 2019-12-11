@@ -9,12 +9,12 @@ choco install javaruntime -n
 choco pin add -n=javaruntime
 
 #User programs
-choco install adobereader -i
+choco install adobereader
 choco install googlechrome
 choco install vlc
-choco install calibre
+#choco install calibre
 choco install sublimetext3
-choco install steam
+#choco install steam
 choco install google-backup-and-sync
 choco install chrome-remote-desktop-host
 choco install pdf24
@@ -29,12 +29,13 @@ choco install peazip
 
 #Easy Life Programs
 choco install everything
-choco install vox -i
+choco install wox -i
 choco install quicklook
 choco install edgedeflector
 
 #Developer stuff
 choco install vscode
+choco install powershell
 choco install powershell-core
 choco install git.install
 choco install openjdk
@@ -47,7 +48,7 @@ choco install nvm.portable
 choco install ruby
 choco install vim
 choco install webpi
-choco install eclipse
+#choco install eclipse
 choco install speccy
 choco install powertoys
 choco install microsoft-windows-terminal
