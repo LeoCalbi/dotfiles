@@ -1,8 +1,4 @@
-# RethinkDB and Python (needed for the Python rethinkdb dump tool)
-#Add-PathVariable "${env:ProgramFiles}\rethinkdb"
-Add-PathVariable "${env:ProgramFiles}\Python"
-# pip is in the scripts dir
-Add-PathVariable "${env:ProgramFiles}\Python\Scripts"
+#Included
 
 # mongoDB
 #Add-PathVariable 'C:\Program Files\MongoDB\Server\4.0\bin'
@@ -11,10 +7,10 @@ Add-PathVariable "${env:ProgramFiles}\Python\Scripts"
 #Add-PathVariable "${env:ProgramFiles}/git/bin"
 # To use git supplied by SourceTree instead of the 'git for Windows' version
 # Add-PathVariable "${env:LOCALAPPDATA}\Atlassian\SourceTree\git_local\bin"
-Add-PathVariable "${env:ProgramFiles}\Git\bin"
+#Add-PathVariable "${env:ProgramFiles}\Git\bin"
 
 # vscode
-Add-PathVariable "${env:LOCALAPPDATA}\Programs\Microsoft VS Code\bin"
+#Add-PathVariable "${env:LOCALAPPDATA}\Programs\Microsoft VS Code\bin"
 
 # Python (also needed for the Python rethinkdb dump tool)
 #Add-PathVariable "${env:ProgramFiles}\Python"

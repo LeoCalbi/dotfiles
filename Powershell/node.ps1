@@ -1,16 +1,18 @@
-Add-PathVariable "${env:ProgramFiles}\nodejs"
+#Not Included
+
+#Add-PathVariable "${env:ProgramFiles}\nodejs"
 
 # Add relative node_modules\.bin to PATH - this allows us to easily use local bin files and less things installed globally
-Add-PathVariable '.\node_modules\.bin'
+#Add-PathVariable '.\node_modules\.bin'
 
 # yarn bin folder
-Add-PathVariable "${env:ProgramFiles(x86)}\Yarn\bin"
+#Add-PathVariable "${env:ProgramFiles(x86)}\Yarn\bin"
 
 # npm global bin folder
-Add-PathVariable ${env:APPDATA}\npm
+#Add-PathVariable ${env:APPDATA}\npm
 
 # Python is used to install binary node modules
-Add-PathVariable $HOME\.windows-build-tools\python27
+#Add-PathVariable $HOME\.windows-build-tools\python27
 
 
 # $env:NODE_PATH = "${env:APPDATA}\npm"

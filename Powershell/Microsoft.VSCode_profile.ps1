@@ -4,7 +4,7 @@
 # Set-ExecutionPolicy unrestricted
 
 # So we can launch pwsh in subshells if we need
-Add-PathVariable "${env:ProgramFiles}\PowerShell\6"
+Add-PathVariable "${env:ProgramFiles}\PowerShell\7"
 
 $profileDir = $PSScriptRoot;
 
@@ -80,10 +80,10 @@ function Test-FileInSubPath([System.IO.DirectoryInfo]$Child, [System.IO.Director
 	$Child.FullName.StartsWith($Parent.FullName)
 }
 
-function stree {
-	$SourceTreeFolder = get-childitem ("${env:LOCALAPPDATA}" + "\SourceTree\app*") | Select-Object -first 1
-	& $SourceTreeFolder/SourceTree.exe -f .
-}
+#function stree {
+#	$SourceTreeFolder = get-childitem ("${env:LOCALAPPDATA}" + "\SourceTree\app*") | Select-Object -first 1
+#	& $SourceTreeFolder/SourceTree.exe -f .
+#}
 
 function get-serial-number {
 	Get-CimInstance -ClassName Win32_Bios | Select-Object serialnumber
@@ -93,7 +93,7 @@ function get-process-for-port($port) {
 	Get-Process -Id (Get-NetTCPConnection -LocalPort $port).OwningProcess
 }
 
-foreach ( $includeFile in ( "defaults", "unix", "development", "node") ) {
+foreach ( $includeFile in ( "defaults", "unix", "development") ) {
 	Unblock-File $profileDir\$includeFile.ps1
 	. "$profileDir\$includeFile.ps1"
 }

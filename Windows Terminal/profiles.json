@@ -138,7 +138,6 @@
       "name": "Windows PowerShell",
       "padding": "0, 0, 0, 0",
       "snapOnInput": true,
-      "startingDirectory": "%USERPROFILE%",
       "useAcrylic": true
     },
     {
@@ -152,11 +151,10 @@
       "fontSize": 10,
       "guid": "{80776634-7501-e24b-3867-f3912454245e}",
       "historySize": 9001,
-      "icon": "%PROGRAMFILES%/PowerShell/6/assets/Powershell_black.ico",
-      "name": "Windows PowerShell 6.0",
+      "icon": "%PROGRAMFILES%/PowerShell/7/assets/Powershell_black.ico",
+      "name": "Windows PowerShell Core",
       "padding": "0, 0, 0, 0",
       "snapOnInput": true,
-      "startingDirectory": "%USERPROFILE%",
       "useAcrylic": true
     },
     {
@@ -174,7 +172,6 @@
       "name": "cmd",
       "padding": "0, 0, 0, 0",
       "snapOnInput": true,
-      "startingDirectory": "%USERPROFILE%",
       "useAcrylic": true
     },
     {
@@ -209,7 +206,6 @@
       "name": "Bash",
       "padding": "0, 0, 0, 0",
       "snapOnInput": true,
-      "startingDirectory": "%USERPROFILE%",
       "useAcrylic": true
     },
     {
@@ -223,6 +219,12 @@
       "hidden": false,
       "name": "Azure Cloud Shell",
       "source": "Windows.Terminal.Azure"
+    },
+    {
+      "guid": "{63e31163-583f-5850-9c1e-24e227dd2da9}",
+      "hidden": false,
+      "name": "PowerShell (dotnet global)",
+      "source": "Windows.Terminal.PowershellCore"
     }
   ],
   "schemes": [

@@ -1,11 +1,13 @@
+#Included
+
 # Just a couple of things (sed, to interpret sed scripts) from http://unxutils.sourceforge.net/
-Add-PathVariable "${env:ProgramFiles}\UnxUtils"
+#Add-PathVariable "${env:ProgramFiles}\UnxUtils"
 
 # Note PSReadLine uses vi keybindings by default. If you want emacs enable:
 # Set-PSReadlineOption -EditMode Emacs
 # I like vi keybindings, so I just add my favourite one from emacs
 # See https://github.com/lzybkr/PSReadLine#usage
-Set-PSReadlineKeyHandler -Key 'Escape,_' -Function YankLastArg
+#Set-PSReadlineKeyHandler -Key 'Escape,_' -Function YankLastArg
 
 # Change how powershell does tab completion
 # http://stackoverflow.com/questions/39221953/can-i-make-powershell-tab-complete-show-me-all-options-rather-than-picking-a-sp
@@ -65,11 +67,9 @@ Unblock-File $PSScriptRoot\whois.ps1
 . $PSScriptRoot\whois.ps1
 
 function uptime {
-	$Reboot = Get-CimInstance Win32_OperatingSystem | select-object csname, LastBootUpTime
-	$date = Get-Date
-	New-TimeSpan -Start $Reboot.LastBootUpTime -End $Date | Select-Object @{Label = "System Name"; Expression = { $Reboot.CSName } },
-	@{Label = "Last Reboot Time"; Expression = { $Reboot.LastBootUpTime } }, Days, Hours, Minutes, Seconds |
-	Format-Table -AutoSize
+	Get-CimInstance Win32_OperatingSystem | select-object csname, @{LABEL = 'LastBootUpTime';
+		EXPRESSION                                                           = { $_.ConverttoDateTime($_.lastbootuptime) }
+ }
 }
 
 function df {
@@ -130,15 +130,6 @@ function Private:file($file) {
 # From https://github.com/Pscx/Pscx
 function sudo() {
 	Invoke-Elevated @args
-}
-
-function sudo1() {
-	if ($args.Length -eq 1) {
-		start-process $args[0] -verb "runAs"
-	}
-	if ($args.Length -gt 1) {
-		start-process $args[0] -ArgumentList $args[1..$args.Length] -verb "runAs"
-	}
 }
 
 # https://gist.github.com/aroben/5542538
