@@ -77,7 +77,8 @@ function U {
 
   throw "Invalid character code $Code"
 }
-
+#Jump locations
+Import-Module ZLocation
 
 # If you prefer oh-my-posh
 Import-Module posh-git
