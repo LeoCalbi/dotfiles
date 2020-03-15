@@ -77,6 +77,13 @@ function U {
 
   throw "Invalid character code $Code"
 }
+
+#Chocolatey Autocomplete
+$ChocolateyProfile = "$env:ChocolateyInstall\helpers\chocolateyProfile.psm1"
+if (Test-Path($ChocolateyProfile)) {
+  Import-Module "$ChocolateyProfile"
+}
+
 #Jump locations
 Import-Module ZLocation
 

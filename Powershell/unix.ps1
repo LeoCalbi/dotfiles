@@ -13,6 +13,10 @@
 # http://stackoverflow.com/questions/39221953/can-i-make-powershell-tab-complete-show-me-all-options-rather-than-picking-a-sp
 Set-PSReadlineKeyHandler -Chord Tab -Function MenuComplete
 
+Set-PSReadLineKeyHandler -Chord UpArrow -Function HistorySearchBackward
+Set-PSReadLineKeyHandler -Chord DownArrow -Function HistorySearchForward
+
+Set-PSReadLineOption -HistorySearchCursorMovesToEnd:$True
 
 # For dig, host, etc. DNS Server
 #Add-PathVariable "${env:ProgramFiles}\ISC BIND 9\bin"
