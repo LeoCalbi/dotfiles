@@ -1,8 +1,8 @@
 # Put this in your ~/.gitconfig or ~/.config/git/config
 # Windows users: "~" is your profile's home directory, e.g. C:\Users\<YourName>
 [user]
-	email = leocalbi@gmail.com
-	name = Leonardo Calbi
+	email = leocalbi@gmail.com # Your email
+	name = Leonardo Calbi      # Your name
 [color]
   # Enable colors in color-supporting terminals
   ui = auto
@@ -10,7 +10,7 @@
   # List available aliases
   aliases = !git config --get-regexp alias | sed -re 's/alias\\.(\\S*)\\s(.*)$/\\1 = \\2/g'
   # Command shortcuts
-  ci = commit -m
+  cm = commit -m
   co = checkout
   st = !git fetch && git status
   # Display tree-like log, because default log is a pain…
@@ -169,7 +169,9 @@
 	timestampResolution = 1001 microseconds
 	minRacyThreshold = 0 nanoseconds
 [winUpdater]
-	recentlySeenVersion = 2.24.0.windows.2
+	recentlySeenVersion = 2.24.1.windows.2
 [filesystem "Oracle Corporation|13.0.1|-936122293"]
 	timestampResolution = 15958 microseconds
 	minRacyThreshold = 0 nanoseconds
+[credential]
+	helper = store

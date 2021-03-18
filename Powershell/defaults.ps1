@@ -1,5 +1,3 @@
-#Included
-
 # Proper history etc
 Import-Module PSReadLine
 
@@ -10,8 +8,21 @@ $PSDefaultParameterValues["Out-File:Encoding"] = "utf8"
 # https://technet.microsoft.com/en-us/magazine/hh241048.aspx
 $MaximumHistoryCount = 10000;
 
-Set-Alias trash Remove-ItemSafely
+Set-Alias -Name "trash" -Value Remove-ItemSafely -Description "Delete file"
 
+Set-Alias -Name "~" -Value Set-LocationHome -Description "Goes to user home directory."
+
+Set-Alias -Name "cd-" -Value Set-LocationLast -Description "Goes to last used directory."
+
+Set-Alias -Name ".." -Value Set-LocationUp -Description "Goes up a directory."
+
+Set-Alias -Name "..." -Value Set-LocationUp2 -Description "Goes up two directories."
+
+Set-Alias -Name "...." -Value Set-LocationUp3 -Description "Goes up three directories."
+
+Set-Alias -Name "....." -Value Set-LocationUp4 -Description "Goes up four directories."
+
+Set-Alias -Name "......" -Value Set-LocationUp5 -Description "Goes up five directories."
 function open($file) {
   invoke-item $file
 }

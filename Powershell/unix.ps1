@@ -23,15 +23,14 @@ Set-PSReadLineOption -HistorySearchCursorMovesToEnd:$True
 
 # Should really be name=value like Unix version of export but not a big deal
 function export($name, $value) {
-	set-item -force -path "env:$name" -value $value;
+	Set-Item -force -path "env:$name" -value $value;
 }
 
 function pkill($name) {
-	get-process $name -ErrorAction SilentlyContinue | stop-process
+	Get-Process $name -ErrorAction SilentlyContinue | Stop-Process
 }
 
-function pgrep($name) {
-	get-process $name
+Set-Alias -Name "pgrep" -Value Get-Process -Description "Get-Process Unix Alias"
 }
 
 # Like Unix touch, creates new files and updates time on old ones
@@ -45,13 +44,6 @@ function touch($file) {
 		New-Item $file -type file
 	}
 }
-
-# From https://stackoverflow.com/questions/894430/creating-hard-and-soft-links-using-powershell
-function ln($target, $link) {
-	New-Item -ItemType SymbolicLink -Path $link -Value $target
-}
-
-set-alias new-link ln
 
 # http://stackoverflow.com/questions/39148304/fuser-equivalent-in-powershell/39148540#39148540
 function fuser($relativeFile) {
