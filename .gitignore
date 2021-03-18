@@ -1,0 +1,8 @@
+# ~/.local/share/chezmoi/.gitignore
+# =============================================================================
+# Used by Git to determine the files and directories to ignore in this project.
+#
+# This list of globs defines repository-specific exclusions.
+# See https://git-scm.com/docs/gitignore
+
+

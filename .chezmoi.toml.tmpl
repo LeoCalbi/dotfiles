@@ -1,0 +1,34 @@
+# ~/.local/share/chezmoi/.chezmoi.toml.tmpl
+# =============================================================================
+# Used to customize configuration when doing a `chezmoi init`.
+#
+# This template file will trigger prompts to fill-in machine-specific
+# templateable values. The resulting file is then created at
+# `~/.config/chezmoi/chezmoi.toml`
+# See https://www.chezmoi.io/docs/how-to/
+#
+# {{- /* This file supports Go's text/template language. */}}
+
+{{- $email := promptString "Git email address for the author/committer" }}
+{{- $name := promptString "Git username for the author/committer" }}
+
+color = "auto"
+
+[data]
+    email = "{{ $email }}"
+    name = "{{ $name }}"
+
+destDir = "~"
+
+format = "json"
+
+sourceDir = "~/.local/share/chezmoi"
+
+[diff]
+    pager = "more.com"
+[edit]
+    command = "code.cmd"
+[sourceVCS]
+    autoCommit = false
+    autoPush = false
+    command = "git"
