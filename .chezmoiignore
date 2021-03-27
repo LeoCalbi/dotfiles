@@ -5,4 +5,7 @@
 # This list defines globs to ignore, and supports Go's text/template language.
 # See https://www.chezmoi.io/docs/reference/#chezmoiignore
 
-
+.vscode/*
+*.gz
+LICENSE
+README.md

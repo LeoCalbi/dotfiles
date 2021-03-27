@@ -1,34 +1,60 @@
-# ~/.local/share/chezmoi/.chezmoi.toml.tmpl
-# =============================================================================
+# ~/.local/share/chezmoi/.chezmoi.yaml.tmpl
+# ============================================================================
 # Used to customize configuration when doing a `chezmoi init`.
 #
 # This template file will trigger prompts to fill-in machine-specific
 # templateable values. The resulting file is then created at
-# `~/.config/chezmoi/chezmoi.toml`
+# `~/.config/chezmoi/chezmoi.yaml`
 # See https://www.chezmoi.io/docs/how-to/
 #
 # {{- /* This file supports Go's text/template language. */}}
 
-{{- $email := promptString "Git email address for the author/committer" }}
-{{- $name := promptString "Git username for the author/committer" }}
+{{- $email := promptString "Git email address for the author/committer" -}}
+{{- $name := promptString "Name for the author/committer" -}}
+{{- $user := promptString "Git username for the author/committer" -}}
+{{- $use_gpg := promptBool "Set up git Gpg secure commits? Ensure to have a gpg key" -}}
+{{ if $use_gpg -}}
+    {{- $gpg_key := promptString "Gpg key for verified commit"}}
+{{- end}}
 
 color = "auto"
 
 [data]
-    email = "{{ $email }}"
-    name = "{{ $name }}"
+    email= "{{ $email }}"
+    name= "{{ $name }}"
+    user= "{{ $user }}"
 
-destDir = "~"
+    use_gpg = "{{ $use_gpg}}"
+    # If using gpg verified commits set the gpg key
+    {{ if $use_gpg -}}
+    gpgkey = "{{ $gpg_key}}"
+    {{- end }}
 
-format = "json"
+destDir= "~"
+format= "json"
+sourceDir= "~/.local/share/chezmoi"
+useBuiltinGit = "auto"
 
-sourceDir = "~/.local/share/chezmoi"
+[bitwarden]
+    command= "bw"
+
+[cd]
+    command= "pwsh"
+    args = ["-nologo"]
 
 [diff]
-    pager = "more.com"
+    pager= "more.com"
+
 [edit]
-    command = "code.cmd"
-[sourceVCS]
-    autoCommit = false
-    autoPush = false
-    command = "git"
+    command= "code.cmd"
+
+[git]
+    autoAdd= false
+    autoCommit= false
+    autoPush= false
+
+[merge]
+    command= "code.cmd"
+
+[template]
+    options= ["missingkey=error"]

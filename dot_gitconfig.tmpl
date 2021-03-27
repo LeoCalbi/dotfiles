@@ -1,6 +1,3 @@
-# Put this in your ~/.gitconfig or ~/.config/git/config
-# Windows users: "~" is your profile's home directory, e.g. C:\Users\<YourName>
-
 # ~/.gitconfig
 # =============================================================================
 # User-specific Git configuration file.
@@ -16,6 +13,7 @@
 #     https://github.com/jayharris/dotfiles-windows
 #     https://github.com/mathiasbynens/dotfiles
 #     https://git-scm.com/docs/git-config/
+#     https://github.com/renemarc/dotfiles
 
 [apply]
     # Detect whitespace errors when applying a patch.
@@ -29,9 +27,13 @@
     # Blue on black is hard to read in git branch -vv: use cyan instead
     upstream = cyan
 
+[column]
+    # Enable column output
+    ui = auto
+
 [core]
 	# Don't paginate output by default
-    pager = cat
+    pager = more.com
 
 	# Global ignore file (not shared)
 	excludesfile = ~/.gitignore_global
@@ -60,6 +62,16 @@
 	# Don't convert eol = lf in eol = crlf by default
  	autocrlf = false
 
+    # If windows use system ssh
+    {{ if eq .chezmoi.os "windows" -}}
+    sshCommand = C:/Windows/System32/OpenSSH/ssh.exe
+    {{- end }}
+
+{{ if .use_gpg -}}
+[commit]
+    gpgsign = true
+{{- end}}
+
 [diff]
     # Use better, descriptive initials (c, i, w) instead of a/b.
     mnemonicPrefix = true
@@ -87,10 +99,12 @@
     prune = true
 
 [grep]
+
     break = true
 
     heading = true
 
+    # Show Line numbers
     lineNumber = true
 
     # Consider most regexes to be ERE
@@ -107,8 +121,7 @@
     # Automatically --follow when given a single path
     follow = true
 
-    # Disable decorate for reflog
-    # (because there is no dedicated `reflog` section available)
+    # Disable decorate for reflog (because there is no dedicated `reflog` section available)
     decorate = false
 
 [merge]
@@ -127,6 +140,9 @@
     # name = automatically merge npm lockfiles
     # driver = npx npm-merge-driver merge %A %O %B %P
 
+    # Use VSCode as default merge tool when running `git merge-tool`
+    tool = vscode
+
 [mergetool]
     # Clean up backup files created by merge tools on tool exit
     keepBackup = false
@@ -139,6 +155,9 @@
 
     # Auto-accept file prompts when launching merge tools
     prompt = false
+
+[mergetool "vscode"]
+    cmd = code --wait $MERGED
 
 # [page]
     # Use custom pager to get an better log on terminal.
@@ -201,6 +220,11 @@
     # Your name
 	name = "{{ .name }}"
 
+    {{ if .use_gpg -}}
+    # GPG key
+    signingkey = "{{ .gpgkey}}"
+    {{- end}}
+
 [versionsort]
     prereleaseSuffix = -pre
 
@@ -213,9 +237,6 @@
     prereleaseSuffix = -rc
 
     prereleaseSuffix = .rc
-
-[winUpdater]
-	  recentlySeenVersion = 2.24.1.windows.2
 
 [credential]
 	  helper = manager-core
