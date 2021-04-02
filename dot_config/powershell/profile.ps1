@@ -1,12 +1,21 @@
+# ~/.config/powershell/profile.ps1
+# ============================================================================
+# Powershell profile settings.
+#
+# On Windows, this file will be linked over to
+# `$Env:USERPROFILE\Documents\WindowsPowershell\profile.ps1` and
+# `$Env:USERPROFILE\Documents\Powershell\profile.ps1`
+# after `chezmoi apply` by the script `../run_after_link-external.ps1.tmpl`.
+
 <#
-    .SYNOPSIS
-        Profile File
-    .DESCRIPTION
-        Profile File
-    .NOTES
-        Leonardo Calbi
+	.SYNOPSIS
+		Profile File
+	.DESCRIPTION
+		Profile File
+	.NOTES
+		Leonardo Calbi
 	.LINK
-        https://github.com/LeoCalbi
+		https://github.com/LeoCalbi/dotfiles
 #>
 
 
@@ -181,15 +190,15 @@ Set-Alias -Name "reloadpwsh" -Value Update-PowershellProfile -Description "Reloa
 
 function Update-PowershellProfile {
 	<#
-    .SYNOPSIS
-        Reload the powershell profile.
-    .INPUTS
-        None
-    .OUTPUTS
-        None
-    .LINK
-        pwsh
-    #>
+	.SYNOPSIS
+		Reload the powershell profile.
+	.INPUTS
+		None
+	.OUTPUTS
+		None
+	.LINK
+		pwsh
+	#>
 	[CmdletBinding()]
 	param()
 	. $PROFILE

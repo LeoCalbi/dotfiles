@@ -10,69 +10,24 @@
 IgnoreUnknown AddKeysToAgent,UseKeychain
 
 Host *
-    {{ if ne .chezmoi.os "windows" -}}
-    # Accelerate connections by reusing existing connections to the same host.
-    ControlMaster auto
-    ControlPath ~/.ssh/controlmasters/%r@%h:%p
-    ControlPersist 5
-    {{- end }}
+		{{ if ne .chezmoi.os "windows" -}}
+		# Accelerate connections by reusing existing connections to the same host.
+		ControlMaster auto
+		ControlPath ~/.ssh/controlmasters/%r@%h:%p
+		ControlPersist 5
+		{{- end }}
 
-    # Allow storing passphrases in the macOS keychain.
-    # See https://developer.apple.com/library/archive/technotes/tn2449/_index.html
-    AddKeysToAgent yes
-    UseKeychain yes
+		# Allow storing passphrases in the macOS keychain.
+		# See https://developer.apple.com/library/archive/technotes/tn2449/_index.html
+		AddKeysToAgent yes
+		UseKeychain yes
 
-    # Keep the connection temporarily open by sending a data every few minutes.
-    ServerAliveCountMax 6
-    ServerAliveInterval 300
+		# Keep the connection temporarily open by sending a data every few minutes.
+		ServerAliveCountMax 6
+		ServerAliveInterval 300
 
-    # Disable client-side roaming support for security reasons.
-    # See https://www.upguard.com/blog/fixing-the-new-openssh-roaming-bug
-    UseRoaming no
+		# Disable client-side roaming support for security reasons.
+		# See https://www.upguard.com/blog/fixing-the-new-openssh-roaming-bug
+		UseRoaming no
 
-    KbdInteractiveAuthentication yes
-
-
-
-Host Proxmox
-  HostName 192.168.0.50
-  User root
-
-Host Home-Assistant
-  HostName 192.168.0.51
-  User root
-
-
-Host MotionEye
-  HostName 192.168.0.56
-  User docker
-
-
-Host OpenMediaVault
-  HostName 192.168.0.53
-  User root
-
-
-Host PfSense
-  HostName 192.168.0.1
-  User root
-
-
-Host Plex
-  HostName 192.168.0.54
-  User root
-
-
-Host UnifiController
-  HostName 192.168.0.60
-  User root
-
-
-Host BitWardenRS
-  HostName 192.168.0.58
-  User docker
-
-
-Host Syncplay
-  HostName 192.168.0.57
-  User docker
+		KbdInteractiveAuthentication yes

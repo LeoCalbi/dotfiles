@@ -1,10 +1,10 @@
-// %APPDATA%/Packages/Microsoft.WindowsTerminal_8wekyb3d8bbwe/LocalState/profiles.json
+// %~/.config/windows_terminal/settings.json
 // ============================================================================
 // Windows Terminal configuration file.
 //
-// On Windows, this file will be copied over to
+// On Windows, this file will be linked over to
 // `$env:LocalAppData\Packages\Microsoft.WindowsTerminal_8wekyb3d8bbwe\LocalState\profiles.json`
-// after `chezmoi apply` by the script `../run_windows_terminal.bat.tmpl`.
+// after `chezmoi apply` by the script `../run_after_link-external.ps1.tmpl`.
 //
 // To view the default settings, hold "alt" while clicking on the "Settings" button.
 // See https://aka.ms/terminal-documentation

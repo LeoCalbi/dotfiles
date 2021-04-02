@@ -1,0 +1,254 @@
+# ~/.local/share/chezmoi/run_after_link-external.ps1
+# ============================================================================
+# Runs after `chezmoi apply` to relocate configuration files as symlink and junction to their .config relatives.
+#
+# This script file links the configuration file to its proper destination on
+# Windows. Chezmoi will skip this script on other operating systems.
+# See https://www.chezmoi.io/docs/how-to/
+#
+# {{- /* This file supports Go's text/template language. */}}
+# {{ if eq .chezmoi.os "windows" -}}
+
+<#
+	.SYNOPSIS
+		Script to link files/folders outside of ~/.config/* with their respective target.
+	.DESCRIPTION
+		Script to link files/folders outside of ~/.config/* with their respective target.
+	.NOTES
+		Leonardo Calbi
+	.LINK
+		https://github.com/LeoCalbi/dotfiles
+#>
+
+
+# ------------------------------------------------------------------------------
+#                               Code
+# ------------------------------------------------------------------------------
+
+$windows_terminal = [PSCustomObject]@{
+	Name = "Windows Terminal"
+	Src  = Join-Path -Path $Env:USERPROFILE -ChildPath "\.config\windows_terminal\"
+	Dst  = Join-Path -Path $Env:LOCALAPPDATA -ChildPath "\Packages\Microsoft.WindowsTerminal_8wekyb3d8bbwe\LocalState\"
+}
+$powershell = [PSCustomObject]@{
+	Name = "System Powershell"
+	Src  = Join-Path -Path $Env:USERPROFILE -ChildPath "\.config\powershell"
+	Dst  = Join-Path -Path $Env:USERPROFILE -ChildPath "\Documents\WindowsPowershell\"
+}
+
+$powershell_core = [PSCustomObject]@{
+	Name = "Powershell Core"
+	Src  = Join-Path -Path $Env:USERPROFILE -ChildPath "\.config\powershell\"
+	Dst  = Join-Path -Path $Env:USERPROFILE -ChildPath "\Documents\Powershell\"
+}
+
+$chocolatey_tools = [PSCustomObject]@{
+	Name = "Chocolatey Tools"
+	Src  = Join-Path -Path $Env:USERPROFILE -ChildPath "\.config\chocolatey-tools\"
+	Dst  = Join-Path -Path $Env:ChocolateyToolsLocation -ChildPath "\BCURRAN3\"
+}
+
+
+$dst = $windows_terminal, $powershell, $powershell_core, $chocolatey_tools
+
+foreach ($d in $dst) {
+	if ( -not (Test-Path $d.Src)) {
+		Write-Error -Message "$($d.Name) source folder not found. Check for errors. Skipping $($d.Name) configuration.";
+	}
+	else {
+		if ( -not (Test-Path $d.Dst)) {
+			Write-Warning "$($d.Name) not installed. Skipping $($d.Name) configuration.";
+		}
+		else {
+			Write-Output "Starting $($d.Name) configuration..."
+			$files = Get-ChildItem -Path $d.Src -File
+			foreach ($f in $files) {
+				Set-SymLinkFile -SrcPath $f -DstPath (Join-Path -Path $d.Dst -ChildPath $f.Name)
+			}
+			$directories = Get-ChildItem -Path $d.Src -Directory
+			foreach ($dir in $directories) {
+				Set-Junction -ScrPath $dir -DstPath (Join-Path -Path $d.Dst -ChildPath $dir.Name)
+			}
+			Write-Output "...$($d.Name) configuration completed."
+		}
+	}
+}
+
+#------------------------------------------------------------------------------
+#                       Functions
+#------------------------------------------------------------------------------
+Function Set-Junction {
+	<#
+	.SYNOPSIS
+		Check target folder and create/update it using junctions to the source corresponding one.
+	.INPUTS
+		System.IO.FileSystemInfo
+		System.String
+	.OUTPUTS
+		None
+	.LINK
+		New-Item
+	#>
+	[CmdletBinding()]
+	Param(
+		[Parameter(Mandatory = $true)]
+		[String]$SrcPath,
+
+		[Parameter(Mandatory = $true)]
+		[String]$DstPath
+	)
+	$folder = $SrcPath.Name
+	$skip = $false
+	if (-not (Test-Path $DstPath)) {
+		Write-Verbose "Current $folder doesn't exist in target, creating junction.";
+		New-Item -ItemType Junction -Path $DstPath -Value $SrcPath
+	}
+	else {
+		Switch ((Get-Item -Path $DstPath)) {
+			($null -eq $_.LinkType) {
+				Write-Verbose "Current $folder is a folder checking before transforming it into junction.";
+				if ((Get-ChildItem -Path $DstPath | Measure-Object).Count -gt 0) {
+					Write-Warning "$folder is not empty check the content and confirm deletion before creating junction."
+					Write-Output (Get-ChildItem -Path $DstPath)
+					Remove-Item -Path $DstPath -Recurse -Confirm
+					if (-not (Test-Path $DstPath)) {
+						Write-Verbose "Current $folder correctly deleted in target, creating junction.";
+						New-Item -ItemType Junction -Path $DstPath -Value $SrcPath
+					}
+					else {
+						Write-Warning "$folder still isn't empty skipping junction."
+						$skip = $true
+					}
+				}
+				else {
+					Write-Verbose "Current $folder is empty creating junction.";
+					New-Item -ItemType Junction -Path $DstPath -Value $SrcPath -Force
+				}
+				Break
+			}
+			($_.LinkType -eq "Junction") {
+				if ($_.Target -ne $SrcPath) {
+					Write-Warning "Current $folder is a junction but doesn't target source, it targets $($_.Target).";
+					Write-Warning "Deleting current junction to create the new one."
+					Remove-Item -Path $DstPath -Confirm
+					if (-not (Test-Path $DstPath)) {
+						Write-Verbose "Current $folder correctly deleted in target, creating junction.";
+						New-Item -ItemType Junction -Path $DstPath -Value $SrcPath
+					}
+					else {
+						Write-Warning "$folder not deleted skipping junction."
+						$skip = $true
+					}
+				}
+				else {
+					Write-Verbose "Current $folder is a symlink that target source file."
+				}
+				Break
+			}
+			default {
+				Write-Error -Message "Type of folder $DstPath unknown.";
+			}
+		}
+	}
+	if (-not $skip) {
+		if ((Get-Item -Path $DstPath).Target -ne $SrcPath) {
+			Write-Error -Message "$SrcPath and $DstPath not corresponding, check for errors.";
+		}
+		else {
+			Write-Verbose "$folder updated succesfully."
+		}
+	}
+	else {
+		Write-Verbose "$folder configuration skipped."
+	}
+}
+
+Function Set-SymLinkFile {
+	<#
+	.SYNOPSIS
+		Check target file and create/update it using symlinks to the source corresponding one.
+	.INPUTS
+		System.IO.FileSystemInfo
+		System.String
+	.OUTPUTS
+		None
+	.LINK
+		New-Item
+	#>
+	[CmdletBinding()]
+	Param(
+		[Parameter(Mandatory = $true)]
+		[System.IO.FileSystemInfo]$SrcPath,
+
+		[Parameter(Mandatory = $true)]
+		[String]$DstPath
+	)
+	$file = $SrcPath.Name
+	$skip = $false
+	if (-not (Test-Path $DstPath)) {
+		Write-Verbose "Current $file doesn't exist, creating symlink.";
+		New-Item -ItemType SymbolicLink -Path $DstPath -Value $SrcPath
+	}
+	else {
+		Switch (Get-Item -Path $DstPath) {
+			($null -eq $_.LinkType) {
+				Write-Warning "Current $file is a file delete it to transform it into a symlink.";
+				Remove-Item -Path $DstPath -Confirm
+				if (-not (Test-Path $DstPath)) {
+					Write-Verbose "Current $file correctly deleted in target, creating symlink.";
+					New-Item -ItemType SymbolicLink -Path $DstPath -Value $SrcPath
+				}
+				else {
+					Write-Warning "$file not deleted skipping symlink."
+					$skip = $true
+				}
+				Break
+			}
+			($_.LinkType -eq "HardLink") {
+				Write-Warning "Current $file is a hardlink that targets $($_.Target) delete it to transform it into a symlink.";
+				Remove-Item -Path $DstPath -Confirm
+				if (-not (Test-Path $DstPath)) {
+					Write-Verbose "Current $file correctly deleted in target, creating symlink.";
+					New-Item -ItemType SymbolicLink -Path $DstPath -Value $SrcPath
+				}
+				else {
+					Write-Warning "$file not deleted skipping symlink."
+					$skip = $true
+				}
+				Break
+			}
+			($_.LinkType -eq "SymbolicLink") {
+				if ($_.Target -ne $SrcPath) {
+					Write-Warning "Current $file is a symlink but doesn't target source, it targets $($_.Target).";
+					Write-Warning "Deleting current symlink to create the new one."
+					Remove-Item -Path $DstPath -Confirm
+					if (-not (Test-Path $DstPath)) {
+						Write-Verbose "Current $file correctly deleted in target, creating symlink.";
+						New-Item -ItemType SymbolicLink -Path $DstPath -Value $SrcPath
+					}
+					else {
+						Write-Warning "$file not deleted skipping symlink."
+						$skip = $true
+					}
+				}
+				else {
+					Write-Verbose "Current $file is a symlink that target source file."
+				}
+				Break
+			}
+			default {
+				Write-Error -Message "Type of file $DstPath unknown.";
+			}
+		}
+	}
+	if ((Get-FileHash $SrcPath).Hash -ne (Get-FileHash $DstPath).Hash) {
+		Write-Error -Message "$SrcPath and $DstPath not corresponding, check for errors.";
+	}
+	else {
+		Write-Verbose "$($SrcPath.Name) updated succesfully."
+	}
+}
+
+
+
+# {{- end }}

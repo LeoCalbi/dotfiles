@@ -1,3 +1,33 @@
+# ~/.config/powershell/psreadlineProfile.ps1
+# ============================================================================
+# PSReadLine powershell Module custom settings.
+#
+# On Windows, this file will be linked over to
+# `$Env:USERPROFILE\Documents\WindowsPowershell\psreadlineProfile.ps1` and
+# `$Env:USERPROFILE\Documents\Powershell\psreadlineProfile.ps1`
+# after `chezmoi apply` by the script `../run_after_link-external.ps1.tmpl`.
+
+<#
+    .SYNOPSIS
+        PSReadLine module custom settings.
+	.DESCRIPTION
+		PSReadLine module custom settings.
+	.NOTES
+		Leonardo Calbi
+	.LINK
+		https://github.com/LeoCalbi/dotfiles
+#>
+
+
+# -----------------------------------------------------------------------------
+#                              PSReadLine
+# -----------------------------------------------------------------------------
+
+#                               Notes
+# -----------------------------------------------------------------------------
+
+#                               Settings
+# -----------------------------------------------------------------------------
 using namespace System.Management.Automation
 using namespace System.Management.Automation.Language
 

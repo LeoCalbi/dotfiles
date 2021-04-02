@@ -9,13 +9,20 @@
 #
 # {{- /* This file supports Go's text/template language. */}}
 
-{{- $email := promptString "Git email address for the author/committer" -}}
-{{- $name := promptString "Name for the author/committer" -}}
-{{- $user := promptString "Git username for the author/committer" -}}
-{{- $use_gpg := promptBool "Set up git Gpg secure commits? Ensure to have a gpg key" -}}
-{{ if $use_gpg -}}
-    {{- $gpg_key := promptString "Gpg key for verified commit"}}
-{{- end}}
+# {{- $email := promptString "Git email address for the author/committer" -}}
+# {{- $name := promptString "Name for the author/committer" -}}
+# {{- $user := promptString "Git username for the author/committer" -}}
+# {{- $os_username := promptString "System username (For Windows see C:\Users\)"}}
+# {{- $use_gpg := promptBool "Set up git Gpg secure commits? Ensure to have a gpg key" -}}
+# {{ if $use_gpg -}}
+#     {{- $gpg_key := promptString "Gpg key for verified commit"}}
+# {{- end}}
+# {{- $use_custom_choco_tools := promptBool "Would you like to change the default chocolatey tools location? (Default: C:\tools" -}}
+# {{ if $use_custom_choco_tools -}}
+#     {{- $choco_tools := promptString "Enter the custom chocolatey tools location path"}}
+# {{ else }}
+#     {{- $choco_tools := "C:\tools"}}
+# {{- end}}
 
 color = "auto"
 
@@ -24,11 +31,15 @@ color = "auto"
     name= "{{ $name }}"
     user= "{{ $user }}"
 
-    use_gpg = "{{ $use_gpg}}"
+    os_username = "{{ $os_username}}"
+
+    use_gpg = "{{ $use_gpg }}"
     # If using gpg verified commits set the gpg key
-    {{ if $use_gpg -}}
-    gpgkey = "{{ $gpg_key}}"
-    {{- end }}
+    # {{ if $use_gpg -}}
+    gpgkey = "{{ $gpg_key }}"
+    # {{- end }}
+    choco_tools = "{{ $choco_tools }}"
+
 
 destDir= "~"
 format= "json"

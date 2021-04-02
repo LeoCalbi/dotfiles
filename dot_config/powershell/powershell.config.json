@@ -1,1 +1,15 @@
-{"Microsoft.PowerShell:ExecutionPolicy":"RemoteSigned"}
+// %~/.config/powershell/powershell.config.json
+// ============================================================================
+// Powershell json settings per-user basis.
+//
+// On Windows, this file will be linked over to
+// `$Env:USERPROFILE\Documents\WindowsPowershell\powershell.config.json`
+// `$Env:USERPROFILE\Documents\Powershell\powershell.config.json`
+// after `chezmoi apply` by the script `../run_after_link-external.ps1.tmpl`.
+//
+// For more informations see https://docs.microsoft.com/en-us/powershell/module/microsoft.powershell.core/about/about_powershell_config
+
+{
+  // Set user allowed execution to RemoteSigned
+  "Microsoft.PowerShell:ExecutionPolicy": "RemoteSigned"
+}
