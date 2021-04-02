@@ -63,14 +63,14 @@
  	autocrlf = false
 
     # If windows use system ssh
-    {{ if eq .chezmoi.os "windows" -}}
+    #{{- if eq .chezmoi.os "windows" -}}
     sshCommand = C:/Windows/System32/OpenSSH/ssh.exe
-    {{- end }}
+    #{{- end }}
 
-{{ if .use_gpg -}}
+#{{- if .use_gpg }}
 [commit]
-    gpgsign = true
-{{- end}}
+    gpgsign = {{ .use_gpg}}
+#{{- end}}
 
 [diff]
     # Use better, descriptive initials (c, i, w) instead of a/b.
@@ -220,10 +220,10 @@
     # Your name
 	name = "{{ .name }}"
 
-    {{ if .use_gpg -}}
+    #{{- if .use_gpg -}}
     # GPG key
-    signingkey = "{{ .gpgkey}}"
-    {{- end}}
+    signingkey = "{{ .gpg_key}}"
+    #{{- end -}}
 
 [versionsort]
     prereleaseSuffix = -pre

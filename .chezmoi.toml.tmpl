@@ -1,45 +1,79 @@
-# ~/.local/share/chezmoi/.chezmoi.yaml.tmpl
+# ~/.local/share/chezmoi/.chezmoi.toml.tmpl
 # ============================================================================
 # Used to customize configuration when doing a `chezmoi init`.
 #
 # This template file will trigger prompts to fill-in machine-specific
 # templateable values. The resulting file is then created at
-# `~/.config/chezmoi/chezmoi.yaml`
+# `~/.config/chezmoi/chezmoi.toml`
 # See https://www.chezmoi.io/docs/how-to/
 #
-# {{- /* This file supports Go's text/template language. */}}
-
-# {{- $email := promptString "Git email address for the author/committer" -}}
-# {{- $name := promptString "Name for the author/committer" -}}
-# {{- $user := promptString "Git username for the author/committer" -}}
-# {{- $os_username := promptString "System username (For Windows see C:\Users\)"}}
-# {{- $use_gpg := promptBool "Set up git Gpg secure commits? Ensure to have a gpg key" -}}
-# {{ if $use_gpg -}}
-#     {{- $gpg_key := promptString "Gpg key for verified commit"}}
-# {{- end}}
-# {{- $use_custom_choco_tools := promptBool "Would you like to change the default chocolatey tools location? (Default: C:\tools" -}}
-# {{ if $use_custom_choco_tools -}}
-#     {{- $choco_tools := promptString "Enter the custom chocolatey tools location path"}}
-# {{ else }}
-#     {{- $choco_tools := "C:\tools"}}
-# {{- end}}
+# {{- /* This file supports Go's text/template language. */ -}}
+# {{- $email := get  . `email` -}}
+# {{- if not $email -}}
+#   {{- $email = promptString `Git email address for the author/committer`  -}}
+# {{- end -}}
+#
+# {{- $name := get  . `name` -}}
+# {{- if not $name -}}
+#   {{- $name = promptString `Name for the author/committer` -}}
+# {{- end -}}
+# {{- print $name -}}
+#
+# {{- $user := get . `user` -}}
+# {{- if not $user -}}
+#   {{- $user = promptString `Git username for the author/committer` -}}
+# {{- end -}}
+#
+# {{- $os_username := get . `os_username` -}}
+# {{- if not $os_username -}}
+#   {{- $os_username = promptString `System username (For Windows see C:/Users/)` -}}
+# {{- end -}}
+#
+# {{- $use_gpg := false -}}
+# {{- if (hasKey . `use_gpg`) -}}
+#   {{- $use_gpg = get . `use_gpg` -}}
+# {{- else -}}
+#   {{- $use_gpg = promptBool `Set up git Gpg secure commits? Ensure to have a gpg key` -}}
+# {{- end -}}
+#
+# {{- $gpg_key := get . `gpg_key` -}}
+# {{- if not $gpg_key -}}
+#   {{- $gpg_key = `` -}}
+#   {{- if $use_gpg -}}
+#     {{- $gpg_key = promptString `Gpg key for verified commit` -}}
+#   {{- end -}}
+# {{- end -}}
+#
+# {{- $use_custom_choco_tools := false -}}
+# {{- if (hasKey . `use_custom_choco_tools`) -}}
+#   {{- $use_custom_choco_tools = get . `use_custom_choco_tools` -}}
+# {{- else -}}
+#   {{- $use_custom_choco_tools = promptBool `Would you like to change the default chocolatey tools location? (Default: C:/tools)` -}}
+# {{- end -}}
+#
+# {{- $choco_tools := get . `choco_tools` -}}
+# {{- if not $choco_tools -}}
+#   {{- $choco_tools = `C:/tools` -}}
+#   {{- if $use_custom_choco_tools -}}
+#     {{- $choco_tools = promptString `Enter the custom chocolatey tools location path` -}}
+#   {{- end -}}
+# {{- end -}}
+#
 
 color = "auto"
 
 [data]
+    # Git Data
     email= "{{ $email }}"
     name= "{{ $name }}"
     user= "{{ $user }}"
-
-    os_username = "{{ $os_username}}"
-
+    # GPG Data
     use_gpg = "{{ $use_gpg }}"
-    # If using gpg verified commits set the gpg key
-    # {{ if $use_gpg -}}
-    gpgkey = "{{ $gpg_key }}"
-    # {{- end }}
+    gpg_key = "{{ $gpg_key }}"
+    # OS Data
+    os_username = "{{ $os_username }}"
+    use_custom_choco_tools = "{{ $use_custom_choco_tools }}"
     choco_tools = "{{ $choco_tools }}"
-
 
 destDir= "~"
 format= "json"

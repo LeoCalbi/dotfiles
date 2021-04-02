@@ -140,8 +140,10 @@ choco config set --name='cacheLocation' --value='C:\ProgramData\choco-cache'
 # Set higher command Execution timeout (4 hours)
 choco config set --name='commandExecutionTimeoutSeconds' --value='14400'
 # Change default C:\Tools\ Chocolatey tools Location to a custom one if needed
+# {{ if .use_custom_choco_tools }}
 $ChocolateyToolsLocation = "{{ .choco_tools}}"
 Write-Host "Updating Enviroment Variable ChocolateyToolsLocation: $Env:ChocolateyToolsLocation -> $ChocolateyToolsLocation"
+# {{ end }}
 [Environment]::SetEnvironmentVariable("ChocolateyToolsLocation", $ChocolateyToolsLocation, [System.EnvironmentVariableTarget]::User)
 Remove-Variable -Name "ChocolateyToolsLocation"
 Write-Host "...Completed configuration of Chocolatey Package Manager"
