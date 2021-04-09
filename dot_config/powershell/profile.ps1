@@ -28,30 +28,41 @@
 
 #                              Modules Import
 # -----------------------------------------------------------------------------
+# Prompt history, copy, paste ecc...
+Import-Module -Name "PSReadline" -ErrorAction SilentlyContinue
 
-Import-Module -Name "PSReadline"
 # Utility functions
-Import-Module -Name "Pscx" -arg @{TextEditor = "code.cmd" }
+Import-Module -Name "Pscx" -arg @{TextEditor = "code.cmd" } -ErrorAction SilentlyContinue
+
+# Safer way of file/folder delete
+Import-Module -Name "Recycle" -ErrorAction SilentlyContinue
+
 # Custom GitStatusCache Module
-Import-Module -Name "GitStatusCachePoshClient"
+Import-Module -Name "GitStatusCachePoshClient"-ErrorAction SilentlyContinue
+
 # Git modules
-Import-Module -Name "posh-git"
+Import-Module -Name "posh-git" -ErrorAction SilentlyContinue
+
 # SSH connection module - SSH connections folder ~/.ssh/config
-Import-Module -Name "posh-sshell"
+Import-Module -Name "posh-sshell" -ErrorAction SilentlyContinue
+
 # ZLocation
-Import-Module -Name "ZLocation"
-# Set Oh-My-Posh v3 Theme
-Import-Module -Name "oh-my-posh"
+Import-Module -Name "ZLocation" -ErrorAction SilentlyContinue
 
-Import-Module -Name "Terminal-Icons"
+# Oh-My-Posh prompt Theme
+Import-Module -Name "oh-my-posh" -ErrorAction SilentlyContinue
 
-Import-Module -Name "FastPing"
+# Better Get-ChildItem
+Import-Module -Name "Terminal-Icons" -ErrorAction SilentlyContinue
+
+# Fast Ping and ping sweep
+Import-Module -Name "FastPing" -ErrorAction SilentlyContinue
 
 # Custom ScreenFetch Module
-Import-Module -Name "Screenfetch"
+Import-Module -Name "Screenfetch" -ErrorAction SilentlyContinue
 
 # Custom utility functions
-Import-Module -Name "MyUtilities"
+Import-Module -Name "MyUtilities" -ErrorAction SilentlyContinue
 
 
 #                              Shell config
@@ -59,12 +70,16 @@ Import-Module -Name "MyUtilities"
 # PS comes preset with 'HKLM' and 'HKCU' drives but is missing HKCR
 New-PSDrive -Name HKCR -Description "HKEY Classes Root" -PSProvider Registry -Root HKEY_CLASSES_ROOT -ErrorAction SilentlyContinue | Out-Null
 
-$PSThemesFolder = "$PSScriptRoot\PoshThemes"
-$CurrentTheme = "cb"
-Set-PoshPrompt -Theme "$PSThemesFolder\$CurrentTheme.omp.json"
-Add-PathVariable -Value $PSScriptRoot -Name Path
-Add-PathVariable -Value $PSScriptRoot -Name PSProfileDir
-Add-PathVariable -Value ([Environment]::GetFolderPath("MyDocuments")) -Name Documents
+if (Get-Module -Name "oh-my-posh") {
+	$PSThemesFolder = "$PSScriptRoot\PoshThemes"
+	$CurrentTheme = "cb"
+	Set-PoshPrompt -Theme "$PSThemesFolder\$CurrentTheme.omp.json"
+}
+if (Get-Module -Name "Pscx") {
+	Add-PathVariable -Value $PSScriptRoot -Name Path
+	Add-PathVariable -Value $PSScriptRoot -Name PSProfileDir
+	Add-PathVariable -Value ([Environment]::GetFolderPath("MyDocuments")) -Name Documents
+}
 
 $PSDefaultParameterValues = @{
 	"Out-File:Encoding"     = "utf8"
@@ -80,12 +95,14 @@ $Apps = (
 	"WhoIs\1.21",
 	"OoklaSpeedtest\1.0.0"
 );
-foreach ($app in $Apps) {
-	if (Test-Path("$PSScriptRoot\$AppDir\$app")) {
-		Add-PathVariable -Value "$PSScriptRoot\$AppDir\$app" -Name Path
-	}
-	else {
-		Write-Error "$AppDir\$app not found."
+if (Get-Module -Name "Pscx") {
+	foreach ($app in $Apps) {
+		if (Test-Path("$PSScriptRoot\$AppDir\$app")) {
+			Add-PathVariable -Value "$PSScriptRoot\$AppDir\$app" -Name Path
+		}
+		else {
+			Write-Error "$AppDir\$app not found."
+		}
 	}
 }
 
@@ -106,35 +123,41 @@ foreach ($script in $scripts) {
 # -----------------------------------------------------------------------------
 
 #region psreadline initialize
-$PSReadlineProfile = "psreadlineProfile.ps1"
-if (Test-Path("$PSScriptRoot\$PSReadlineProfile")) {
-	Unblock-File -Path "$PSScriptRoot\$PSReadlineProfile"
-	. "$PSScriptRoot\$PSReadlineProfile"
-}
-else {
-	Write-Error "$PSScriptRoot\$PSReadlineProfile not found."
+if (Get-Module -Name "PSReadLine") {
+	$PSReadlineProfile = "psreadlineProfile.ps1"
+	if (Test-Path("$PSScriptRoot\$PSReadlineProfile")) {
+		Unblock-File -Path "$PSScriptRoot\$PSReadlineProfile"
+		. "$PSScriptRoot\$PSReadlineProfile"
+	}
+	else {
+		Write-Error "$PSScriptRoot\$PSReadlineProfile not found."
+	}
 }
 #endregion
 
 #region pscx initialize
-$PSCXProfile = "pscxProfile.ps1"
-if (Test-Path("$PSScriptRoot\$PSCXProfile")) {
-	Unblock-File -Path "$PSScriptRoot\$PSCXProfile"
-	. "$PSScriptRoot\$PSCXProfile"
-}
-else {
-	Write-Error "$PSScriptRoot\$PSCXProfile not found."
+if (Get-Module -Name "Pscx") {
+	$PSCXProfile = "pscxProfile.ps1"
+	if (Test-Path("$PSScriptRoot\$PSCXProfile")) {
+		Unblock-File -Path "$PSScriptRoot\$PSCXProfile"
+		. "$PSScriptRoot\$PSCXProfile"
+	}
+	else {
+		Write-Error "$PSScriptRoot\$PSCXProfile not found."
+	}
 }
 #endregion
 
 #region recycle initialize
-$RecycleProfile = "recycleProfile.ps1"
-if (Test-Path("$PSScriptRoot\$RecycleProfile")) {
-	Unblock-File -Path "$PSScriptRoot\$RecycleProfile"
-	. "$PSScriptRoot\$RecycleProfile"
-}
-else {
-	Write-Error "$PSScriptRoot\$RecycleProfile not found."
+if (Get-Module -Name "Recycle") {
+	$RecycleProfile = "recycleProfile.ps1"
+	if (Test-Path("$PSScriptRoot\$RecycleProfile")) {
+		Unblock-File -Path "$PSScriptRoot\$RecycleProfile"
+		. "$PSScriptRoot\$RecycleProfile"
+	}
+	else {
+		Write-Error "$PSScriptRoot\$RecycleProfile not found."
+	}
 }
 #endregion
 
@@ -168,13 +191,15 @@ else {
 # -----------------------------------------------------------------------------
 
 #region chezmoi initialize
-$ChezmoiProfile = "chezmoiAutocomplete.ps1"
-if (Test-Path("$PSScriptRoot\$ChezmoiProfile")) {
-	Unblock-File -Path "$PSScriptRoot\$ChezmoiProfile"
-	. "$PSScriptRoot\$ChezmoiProfile"
-}
-else {
-	Write-Error "$PSScriptRoot\$ChezmoiProfile not found."
+if (Get-Command -Verb "chezmoi" -ErrorAction SilentlyContinue) {
+	$ChezmoiProfile = "chezmoiAutocomplete.ps1"
+	if (Test-Path("$PSScriptRoot\$ChezmoiProfile")) {
+		Unblock-File -Path "$PSScriptRoot\$ChezmoiProfile"
+		. "$PSScriptRoot\$ChezmoiProfile"
+	}
+	else {
+		Write-Error "$PSScriptRoot\$ChezmoiProfile not found."
+	}
 }
 #endregion
 
@@ -201,5 +226,5 @@ function Update-PowershellProfile {
 	#>
 	[CmdletBinding()]
 	param()
-	. $PROFILE
+	. $Profile.CurrentUserAllHosts
 }

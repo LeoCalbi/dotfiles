@@ -1,14 +1,3 @@
-<!--
-# ~/.config/chocolatey-tools/choco-package-list-backup.config
-# ============================================================================
-# Choco-package-list-backup chocolatey package
-# for saving installed package information configuration.
-#
-# On Windows, this file will be linked over to
-# `$Env:ChocolateyToolsLocation\BCURRAN3\choco-package-list-backup.config`
-# after `chezmoi apply` by the script `../run_after_link-external.ps1.tmpl`.
-# {{- /* This file supports Go's text/template language. */}}
--->
 <?xml version="1.0"?>
 <Settings>
   <Preferences>
@@ -43,7 +32,17 @@
     <PostProcessScript>false</PostProcessScript>
   </Preferences>
 </Settings>
-
+<!--
+# ~/.config/chocolatey-tools/choco-package-list-backup.config
+# ============================================================================
+# Choco-package-list-backup chocolatey package
+# for saving installed package information configuration.
+#
+# On Windows, this file will be linked over to
+# `$Env:ChocolateyToolsLocation\BCURRAN3\choco-package-list-backup.config`
+# after `chezmoi apply` by the script `../run_after_link-external.ps1.tmpl`.
+# {{- /* This file supports Go's text/template language. */}}
+-->
 <!--
 choco-package-list-backup.config preferences notes:
 
