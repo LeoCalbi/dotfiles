@@ -26,6 +26,19 @@
 #                              Notes
 # -----------------------------------------------------------------------------
 
+#                              Conda init
+# -----------------------------------------------------------------------------
+#region conda initialize
+$CondaDir = "$ENV:ChocolateyToolsLocation\Anaconda3\Scripts\conda.exe"
+# !! Contents within this block are managed by 'conda init' !!
+if (Test-Path($CondaDir)) {
+	(& $CondaDir "shell.powershell" "hook") | Out-String | Invoke-Expression
+}
+else {
+	Write-Error "$CondaDir not found."
+}
+#endregion
+
 #                              Modules Import
 # -----------------------------------------------------------------------------
 # Prompt history, copy, paste ecc...
@@ -158,19 +171,6 @@ if (Get-Module -Name "Recycle") {
 	else {
 		Write-Error "$PSScriptRoot\$RecycleProfile not found."
 	}
-}
-#endregion
-
-#                              Conda init
-# -----------------------------------------------------------------------------
-#region conda initialize
-$CondaDir = "$ENV:ChocolateyToolsLocation\Anaconda3\Scripts\conda.exe"
-# !! Contents within this block are managed by 'conda init' !!
-if (Test-Path($CondaDir)) {
-	(& $CondaDir "shell.powershell" "hook") | Out-String | Invoke-Expression
-}
-else {
-	Write-Error "$CondaDir not found."
 }
 #endregion
 
