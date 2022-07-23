@@ -60,46 +60,40 @@
 # {{- end -}}
 #
 
-color = "auto"
+encryption = "age"
+format = "json"
+verbose = true
 
 [data]
-    # Git Data
-    email= "{{ $email }}"
-    name= "{{ $name }}"
-    user= "{{ $user }}"
-    # GPG Data
-    use_gpg = "{{ $use_gpg }}"
-    gpg_key = "{{ $gpg_key }}"
-    # OS Data
-    os_username = "{{ $os_username }}"
-    use_custom_choco_tools = "{{ $use_custom_choco_tools }}"
-    choco_tools = "{{ $choco_tools }}"
+# Git Data
+email = "{{ $email }}"
+name = "{{ $name }}"
+user = "{{ $user }}"
+# GPG Data
+gpg_key = "{{ $gpg_key }}"
+use_gpg = "{{ $use_gpg }}"
+# OS Data
+choco_tools = "{{ $choco_tools }}"
+os_username = "{{ $os_username }}"
+use_custom_choco_tools = "{{ $use_custom_choco_tools }}"
 
-destDir= "~"
-format= "json"
-sourceDir= "~/.local/share/chezmoi"
-useBuiltinGit = "auto"
-
-[bitwarden]
-    command= "bw"
-
-[cd]
-    command= "pwsh"
-    args = ["-nologo"]
+[completion]
+custom = true
 
 [diff]
-    pager= "more.com"
+args = ["--diff"]
+command = "code"
 
 [edit]
-    command= "code.cmd"
+command = "code.cmd"
 
 [git]
-    autoAdd= false
-    autoCommit= false
-    autoPush= false
+autoAdd = false
+autoCommit = false
+autoPush = false
 
 [merge]
-    command= "code.cmd"
+command = "code.cmd"
 
 [template]
-    options= ["missingkey=error"]
+options = ["missingkey=error"]
