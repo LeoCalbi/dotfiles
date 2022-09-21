@@ -1,4 +1,0 @@
-{{ if eq .chezmoi.os `windows` }}
-start "initial-config" /B /WAIT powershell.exe -NoLogo -Command "& $PWD\initial-setup.ps1"
-
-{{ end }}

@@ -1,0 +1,9 @@
+[user]
+    # Your email
+	email = "leocalbi@gmail.com"
+
+    # Your name
+	name = "Leonardo Calbi"
+
+    ## GPG key
+    signingkey = "62F711B602B60E4B"

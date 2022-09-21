@@ -1,10 +1,7 @@
 # ~/.gitconfig
 # =============================================================================
 # User-specific Git configuration file.
-#
-# See https://git-scm.com/docs/git-config
-#
-# {{- /* This file supports Go's text/template language. */ -}}
+# See: https://git-scm.com/docs/git-config
 #
 # Sources:
 #     https://delicious-insights.com/en/posts/mastering-git-submodules/
@@ -19,38 +16,29 @@
     # Detect whitespace errors when applying a patch.
     whitespace = fix
 
-[color]
-    # Enable colors in color-supporting terminals
-    ui = auto
-
 [color "branch"]
     # Blue on black is hard to read in git branch -vv: use cyan instead
     upstream = cyan
+
+[color]
+    # Enable colors in color-supporting terminals
+    ui = auto
 
 [column]
     # Enable column output
     ui = auto
 
-[core]
-	# Don't paginate output by default
-    pager = more.com
+[commit]
+    gpgsign = true
 
-	# Global ignore file (not shared)
-	excludesfile = ~/.gitignore_global
+[core]
+	# Paginate
+    pager = less
 
 	# Global shared hooks directory
   	# hooksPath = ~/.githooks
-  	#
-  	# Out of luck: on Windows w/o msysGit? You may have Notepad++…
-  	# editor = 'C:/Program Files (x86)/Notepad++/notepad++.exe' -multiInst -notabbar -nosession -noPlugin
-  	#
-  	# If you want to use Sublime Text 2's subl wrapper:
-  	# editor = subl -w
-  	#
-  	# Sublime Text 3 on Windows:
-  	# editor = 'c:/Program Files/Sublime Text 3/subl.exe' -w
-  	#
-    # VSCode
+
+    # Git Editor -> VSCode
     editor = code --wait
 
     # Don't consider trailing space change as a cause for merge conflicts
@@ -61,16 +49,6 @@
 
 	# Don't convert eol = lf in eol = crlf by default
  	autocrlf = false
-
-    # If windows use system ssh
-    #{{- if eq .chezmoi.os "windows" -}}
-    sshCommand = C:/Windows/System32/OpenSSH/ssh.exe
-    #{{- end }}
-
-#{{- if .use_gpg }}
-[commit]
-    gpgsign = {{ .use_gpg}}
-#{{- end}}
 
 [diff]
     # Use better, descriptive initials (c, i, w) instead of a/b.
@@ -86,9 +64,9 @@
     submodule = log
 
     # Use VSCode as default diff tool when running `git diff-tool`
-    tool = vscode
+    tool = code
 
-[difftool "vscode"]
+[difftool "code"]
     cmd = code --wait --diff $LOCAL $REMOTE
 
 [fetch]
@@ -111,7 +89,7 @@
     extendedRegexp = true
 
 [gpg]
-    # Chocolatey gnupg package install location
+    # Gnupg package install location
     program = "C:/Program Files (x86)/gnupg/bin/gpg.exe"
 
 [help]
@@ -145,7 +123,7 @@
     # driver = npx npm-merge-driver merge %A %O %B %P
 
     # Use VSCode as default merge tool when running `git merge-tool`
-    tool = vscode
+    tool = code
 
 [mergetool]
     # Clean up backup files created by merge tools on tool exit
@@ -160,8 +138,8 @@
     # Auto-accept file prompts when launching merge tools
     prompt = false
 
-[mergetool "vscode"]
-    cmd = code --wait $MERGED
+[mergetool "code"]
+    cmd = code --wait --merge $REMOTE $LOCAL $BASE $MERGED
 
 # [page]
     # Use custom pager to get an better log on terminal.
@@ -217,18 +195,6 @@
     # Sort tags as version numbers whenever applicable, so 1.10.2 is AFTER 1.2.0.
     sort = version:refname
 
-[user]
-    # Your email
-	email = "{{ .email }}"
-
-    # Your name
-	name = "{{ .name }}"
-
-    #{{- if .use_gpg -}}
-    # GPG key
-    signingkey = "{{ .gpg_key}}"
-    #{{- end -}}
-
 [versionsort]
     prereleaseSuffix = -pre
     prereleaseSuffix = .pre
@@ -240,11 +206,25 @@
 [credential]
 	  helper = manager-core
       interactive = auto
-      credentialStore = cache
+      credentialStore = plaintext
+
+[credential "https://gitlab.com"]
+	provider = generic
 
 [include]
     # Include aliases.
-    path = .gitconfig_aliases
+    path = ./aliases
 
     # Include extra configuration (if any).
-    path = .gitconfig_local
+    path = ./local
+
+    # Default to personal configuration.
+    path = ./personal
+
+[includeIf "gitdir/i:**/dev/personal**/"]
+    # Force personal configuration if in personal directory.
+    path = ./personal
+
+[includeIf "gitdir/i:**/dev/kantar/**"]
+    # Force kantar configuration if in kantar directory.
+    path = ./kantar

@@ -1,0 +1,10 @@
+#!/bin/sh
+echo "Decrypting Age key..."
+if [ ! -f "${HOME}/key.txt" ]
+then
+    age --decrypt --output "${HOME}/key.txt" "{{ .chezmoi.sourceDir }}/key.txt.age"
+    chmod 600 "${HOME}/key.txt"
+    echo "...Decrypted age key.txt"
+else
+    echo "...Age key already exists. Skipping decryption."
+fi

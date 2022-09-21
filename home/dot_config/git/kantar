@@ -1,0 +1,9 @@
+[user]
+    # Your email
+	email = "leonardo.calbi@kantar.com"
+
+    # Your name
+	name = "Leonardo Calbi"
+
+    ## GPG key
+    signingkey = "4EF559A3AD43D708"

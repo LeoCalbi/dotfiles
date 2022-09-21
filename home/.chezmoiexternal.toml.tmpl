@@ -1,0 +1,15 @@
+{{ if eq .chezmoi.os "windows" }}
+[".config/custom-pwsh-modules/MyUtilities"]
+    refreshPeriod = "168h"
+    type = "git-repo"
+    url = "https://github.com/LeoCalbi/MyUtilities.git"
+[".config/custom-pwsh-modules/GitStatusCachePoshClient"]
+    refreshPeriod = "168h"
+    type = "git-repo"
+    url = "https://github.com/LeoCalbi/GitStatusCachePoshClient.git"
+
+[".config/custom-pwsh-modules/ScreenFetch"]
+    refreshPeriod = "168h"
+    type = "git-repo"
+    url = "https://github.com/LeoCalbi/ScreenFetch.git"
+{{ end }}
