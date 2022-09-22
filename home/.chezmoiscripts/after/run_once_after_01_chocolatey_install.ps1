@@ -42,7 +42,6 @@ $PackagesToInstall = [ordered]@{
     '7zip'                       = '';
 	'adobereader'                = ' --params=''"/ NoUpdates"''';
     'age.portable'               = '';
-	'anaconda3'                  = ' --params=''"/ AddToPath"''';
 	'bitwarden'                  = '';
 	'bitwarden-cli'              = '';
     'brave'                      = '';
@@ -66,7 +65,7 @@ $PackagesToInstall = [ordered]@{
     'git-status-posh-client'     = '';
 	'gnupg'                      = '';
 	'google-drive-file-stream'   = '';
-	'googlechrome'               = '';
+	# 'googlechrome'               = '';
     'gsudo'                      = '';
 	'jdk8'                       = ' --params= ''"both= true source= false"''';
 	'jre8'                       = '';
