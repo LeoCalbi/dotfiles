@@ -29,7 +29,7 @@
 #                              Conda init
 # -----------------------------------------------------------------------------
 #region conda initialize
-$CondaDir = "$ENV:ChocolateyToolsLocation\Anaconda3\Scripts\conda.exe"
+$CondaDir = "$ENV:ChocolateyToolsLocation\miniconda3\Scripts\conda.exe"
 # !! Contents within this block are managed by 'conda init' !!
 if (Test-Path($CondaDir)) {
 	(& $CondaDir "shell.powershell" "hook") | Out-String | Invoke-Expression
@@ -63,7 +63,7 @@ Import-Module -Name "posh-sshell" -ErrorAction SilentlyContinue
 Import-Module -Name "ZLocation" -ErrorAction SilentlyContinue
 
 # Oh-My-Posh prompt Theme
-Import-Module -Name "oh-my-posh" -ErrorAction SilentlyContinue
+# Import-Module -Name "oh-my-posh" -ErrorAction SilentlyContinue
 
 # Better Get-ChildItem
 Import-Module -Name "Terminal-Icons" -ErrorAction SilentlyContinue
@@ -77,17 +77,28 @@ Import-Module -Name "Screenfetch" -ErrorAction SilentlyContinue
 # Custom utility functions
 Import-Module -Name "MyUtilities" -ErrorAction SilentlyContinue
 
+# Gsudo module
+Import-Module 'D:\Tools\\gsudo\Current\gsudoModule.psd1' -ErrorAction SilentlyContinue
+
+#                              Oh-My-Posh
+# -----------------------------------------------------------------------------
+#region oh-my-posh
+oh-my-posh init pwsh --config "$(Split-Path -Path $PROFILE)/PoshThemes/cb.omp.json" | Invoke-Expression
+Enable-PoshTransientPrompt
+Enable-PoshLineError
+Enable-PoshTooltips
+#$env:POSH_GIT_ENABLED = $true
 
 #                              Shell config
 # -----------------------------------------------------------------------------
 # PS comes preset with 'HKLM' and 'HKCU' drives but is missing HKCR
 New-PSDrive -Name HKCR -Description "HKEY Classes Root" -PSProvider Registry -Root HKEY_CLASSES_ROOT -ErrorAction SilentlyContinue | Out-Null
 
-if (Get-Module -Name "oh-my-posh") {
+<# if (Get-Module -Name "oh-my-posh") {
 	$PSThemesFolder = "$PSScriptRoot\PoshThemes"
 	$CurrentTheme = "cb"
 	Set-PoshPrompt -Theme "$PSThemesFolder\$CurrentTheme.omp.json"
-}
+} #>
 if (Get-Module -Name "Pscx") {
 	Add-PathVariable -Value $PSScriptRoot -Name Path
 	Add-PathVariable -Value $PSScriptRoot -Name PSProfileDir
@@ -100,6 +111,12 @@ $PSDefaultParameterValues = @{
 	'Get-Help:ShowWindow'   = $false
 }
 [console]::OutputEncoding = [Text.Utf8Encoding]::new()
+
+Set-Alias -Name "sudo" -Value "gsudo"
+
+Set-Alias -Name "docker" -Value "podman"
+Set-Alias -Name "docker-compose" -Value "podman-compose"
+
 
 #                              Apps Import
 # -----------------------------------------------------------------------------
@@ -199,6 +216,22 @@ if (Get-Command -Verb "chezmoi" -ErrorAction SilentlyContinue) {
 	}
 	else {
 		Write-Error "$PSScriptRoot\$ChezmoiProfile not found."
+	}
+}
+#endregion
+
+#                              Kubectl autocomplete
+# -----------------------------------------------------------------------------
+
+#region kubectl initialize
+if (Get-Command -Verb "kubectl" -ErrorAction SilentlyContinue) {
+	$KubectlProfile = "kubectlAutocomplete.ps1"
+	if (Test-Path("$PSScriptRoot\$KubectlProfile")) {
+		Unblock-File -Path "$PSScriptRoot\$kubectlProfile"
+		. "$PSScriptRoot\$kubectlProfile"
+	}
+	else {
+		Write-Error "$PSScriptRoot\$kubectlProfile not found."
 	}
 }
 #endregion
