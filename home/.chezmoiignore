@@ -6,17 +6,17 @@
 # See https://www.chezmoi.io/docs/reference/#chezmoiignore
 
 .vscode/*
-*.gz
+/**/*.gz
 LICENSE
 README.md
 key.txt.age
 {{-  if ne .chezmoi.os "windows" }}
-*.ps1
-*.ps1.tmpl
-*.bat
-*.bat.tmpl
+/**/*.ps1
+/**/*.ps1.tmpl
+/**/*.bat
+/**/*.bat.tmpl
 {{-  end }}
 {{-  if ne .chezmoi.os "linux" }}
-*.sh
-*.sh.tmpl
+/**/*.sh
+/**/*.sh.tmpl
 {{-  end }}
