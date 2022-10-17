@@ -1,0 +1,94 @@
+#!/usr/bin/env zsh
+# My .zshrc file
+
+# Enable Powerlevel10k instant prompt. Should stay close to the top of ~/.zshrc.
+# Initialization code that may require console input (password prompts, [y/n]
+# confirmations, etc.) must go above this block; everything else may go below.
+if [[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]]; then
+  source "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh"
+fi
+
+### Added by Zinit's installer
+if [[ ! -f $ZINIT_HOME/zinit.git/zinit.zsh ]]; then
+    print -P "%F{33} %F{220}Installing %F{33}ZDHARMA-CONTINUUM%F{220} Initiative Plugin Manager (%F{33}zdharma-continuum/zinit%F{220})…%f"
+    command mkdir -p "$ZINIT_HOME" && command chmod g-rwX "$ZINIT_HOME"
+    command git clone https://github.com/zdharma-continuum/zinit "$ZINIT_HOME/zinit.git" && \
+        print -P "%F{33} %F{34}Installation successful.%f%b" || \
+        print -P "%F{160} The clone has failed.%f%b"
+fi
+
+source "$ZINIT_HOME/zinit.git/zinit.zsh"
+autoload -Uz _zinit
+(( ${+_comps} )) && _comps[zinit]=_zinit
+
+# Load a few important annexes, without Turbo
+# (this is currently required for annexes)
+zinit light-mode for \
+    zdharma-continuum/zinit-annex-as-monitor \
+    zdharma-continuum/zinit-annex-bin-gem-node \
+    zdharma-continuum/zinit-annex-patch-dl \
+    zdharma-continuum/zinit-annex-rust
+
+### End of Zinit's installer chunk
+
+setopt prompt_subst
+
+zinit light-mode lucid depth=1 for \
+    romkatv/powerlevel10k
+
+# Load PowerLevel10K
+[[ ! -f "$ZDOTDIR/.p10k.zsh" ]] || source "$ZDOTDIR/.p10k.zsh"
+
+zinit wait lucid depth=1 for \
+	OMZL::history.zsh \
+	blockf OMZL::completion.zsh \
+    atinit"zicompinit; zicdreplay" \
+        zdharma-continuum/fast-syntax-highlighting \
+    atload"_zsh_autosuggest_start" \
+        zsh-users/zsh-autosuggestions \
+    blockf atpull"zinit creinstall -q ." \
+        zsh-users/zsh-completions \
+    zdharma-continuum/history-search-multi-word \
+	atload"bindkey '^[[A' history-substring-search-up; \
+			bindkey '^[[B' history-substring-search-down" \
+	zsh-users/zsh-history-substring-search
+
+
+
+# Lines configured by the user
+# Local config
+[[ -f "$ZDOTDIR/.zshrc.local" ]] && source "$ZDOTDIR/.zshrc.local"
+
+# aliases
+[[ -f "$ZDOTDIR/.aliases" ]] && source "$ZDOTDIR/.aliases"
+# End of lines configured by the user
+
+# >>> conda initialize >>>
+# !! Contents within this block are managed by 'conda init' !!
+__conda_setup="$($XDG_DATA_HOME'/miniconda/bin/conda' 'shell.zsh' 'hook' 2> /dev/null)"
+if [ $? -eq 0 ]; then
+    eval "$__conda_setup"
+else
+    if [ -f "$XDG_DATA_HOME/miniconda/etc/profile.d/conda.sh" ]; then
+        . "$XDG_DATA_HOME/miniconda/etc/profile.d/conda.sh"
+    else
+        export PATH="$XDG_DATA_HOME/miniconda/bin:$PATH"
+    fi
+fi
+unset __conda_setup
+# <<< conda initialize <<<
+
+# >>> mamba initialize >>>
+# !! Contents within this block are managed by 'mamba init' !!
+__mamba_setup="$($HOME'/.local/bin/micromamba' shell hook --shell zsh --prefix $MAMBA_ROOT_PREFIX 2> /dev/null)"
+if [ $? -eq 0 ]; then
+    eval "$__mamba_setup"
+else
+    if [ -f "$MAMBA_ROOT_PREFIX/etc/profile.d/micromamba.sh" ]; then
+        . "$MAMBA_ROOT_PREFIX/etc/profile.d/micromamba.sh"
+    else
+        export  PATH="$MAMBA_ROOT_PREFIX/bin:$PATH"  # extra space after export prevents interference from conda init
+    fi
+fi
+unset __mamba_setup
+# <<< mamba initialize <<<
