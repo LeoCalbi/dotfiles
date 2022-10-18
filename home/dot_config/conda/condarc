@@ -12,7 +12,6 @@ channels:
   - defaults
   - conda-forge
 
-
 auto_activate_base: false
 changeps1: false
 pip_interop_enabled: True

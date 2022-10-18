@@ -15,8 +15,14 @@ key.txt.age
 /**/*.ps1.tmpl
 /**/*.bat
 /**/*.bat.tmpl
+/**/custom-pwsh-modules
+/**/powershell
+/**/windows_terminal
+/**/micro
 {{-  end }}
 {{-  if ne .chezmoi.os "linux" }}
 /**/*.sh
 /**/*.sh.tmpl
+/**/environment.d
+/**/zsh
 {{-  end }}
