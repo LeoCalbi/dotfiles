@@ -173,8 +173,8 @@ bh_unicode_properties.cache
 GitHub.sublime-settings
 
 # Git user info
-git/work
-git/personal
+work
+personal
 
 # Temporary decrypted files
 *.decrypted~*
