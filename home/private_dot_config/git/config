@@ -1,0 +1,223 @@
+# ~/.gitconfig
+# =============================================================================
+# User-specific Git configuration file.
+# See: https://git-scm.com/docs/git-config
+#
+# Sources:
+#     https://delicious-insights.com/en/posts/mastering-git-submodules/
+#     https://github.com/haacked/dotfiles
+#     https://github.com/holman/dotfiles
+#     https://github.com/jayharris/dotfiles-windows
+#     https://github.com/mathiasbynens/dotfiles
+#     https://git-scm.com/docs/git-config/
+#     https://github.com/renemarc/dotfiles
+
+[apply]
+    # Detect whitespace errors when applying a patch.
+    whitespace = fix
+
+[color "branch"]
+    # Blue on black is hard to read in git branch -vv: use cyan instead
+    upstream = cyan
+
+[color]
+    # Enable colors in color-supporting terminals
+    ui = auto
+
+[column]
+    # Enable column output
+    ui = auto
+
+[core]
+	# Paginate
+    pager = less
+
+	# Global shared hooks directory
+  	# hooksPath = ~/.githooks
+
+    # Git Editor -> VSCode
+    editor = code --wait
+
+    # Don't consider trailing space change as a cause for merge conflicts
+    whitespace = -trailing-space
+
+	# Default End Of Line
+	eol = lf
+
+	# Don't convert eol = lf in eol = crlf by default
+ 	autocrlf = false
+
+[diff]
+    # Use better, descriptive initials (c, i, w) instead of a/b.
+    mnemonicPrefix = true
+
+    # Show renames/moves as such
+    renames = true
+
+    # When using --word-diff, assume --word-diff-regex=.
+    wordRegex = .
+
+    # Display submodule-related information (commit listings)
+    submodule = log
+
+    # Use VSCode as default diff tool when running `git diff-tool`
+    tool = code
+
+[difftool "code"]
+    cmd = code --wait --diff $LOCAL $REMOTE
+
+[fetch]
+    # Auto-fetch submodule changes (sadly, won't auto-update)
+    recurseSubmodules = on-demand
+
+    # Remove any remote-tracking references that no longer exist on the remote.
+    prune = true
+
+[grep]
+
+    break = true
+
+    heading = true
+
+    # Show Line numbers
+    lineNumber = true
+
+    # Consider most regexes to be ERE
+    extendedRegexp = true
+
+[help]
+    # Correct and execute mistyped commands.
+    autocorrect = 1
+
+[log]
+    # Use abbrev SHAs whenever possible/relevant instead of full 40 chars
+    abbrevCommit = true
+
+    # Automatically --follow when given a single path
+    follow = true
+
+    # Disable decorate for reflog (because there is no dedicated `reflog` section available)
+    decorate = false
+
+[merge]
+    # Display common-ancestor blocks in conflict hunks
+    # conflictStyle = diff3
+    # Disable fast-forward merges as default merge strategy.
+    # Force explicit call of `git merge --ff …`.
+    ff = false
+
+    # Custom/dedicated merge drive for npm lock files (`package-lock.json`).
+    # Also works with Yarn.
+    # Use Git attributes to set targeted files (located at `~/.config/git/attributes``
+    # when installed with npm).
+    # See https://www.npmjs.com/package/npm-merge-driver
+    # [merge "npm-merge-driver"]
+    # name = automatically merge npm lockfiles
+    # driver = npx npm-merge-driver merge %A %O %B %P
+
+    # Use VSCode as default merge tool when running `git merge-tool`
+    tool = code
+
+[mergetool]
+    # Clean up backup files created by merge tools on tool exit
+    keepBackup = false
+
+    # Clean up temp files created by merge tools on tool exit
+    keepTemporaries = false
+
+    # Put the temp files in a dedicated dir anyway
+    writeToTemp = true
+
+    # Auto-accept file prompts when launching merge tools
+    prompt = false
+
+[mergetool "code"]
+    cmd = code --wait --merge $REMOTE $LOCAL $BASE $MERGED
+
+# [page]
+    # Use custom pager to get an better log on terminal.
+    # As this is an external tool it has to be installed.
+    # See https://github.com/so-fancy/diff-so-fancy
+    # show = diff-so-fancy | less --tabs=4 -RFX
+
+[pull]
+    # This is GREAT… when you know what you're doing and are careful
+    # not to pull --no-rebase over a local line containing a true merge.
+    # rebase = true
+
+    # This option, which does away with the one gotcha of
+    # auto-rebasing on pulls, is only available from 1.8.5 onwards.
+    # rebase = preserve
+
+    # WARNING! This option, which is the latest variation, is only
+    # available from 2.18 onwards.
+    rebase = merges
+
+[push]
+    # Default push should only push the current branch to its push target, regardless of its remote name
+    default = upstream
+
+    # When pushing, also push tags whose commit-ishs are now reachable upstream
+    followTags = true
+
+[rebase]
+    # Rebase advanced usage.
+    # Automagically reorder and prefix your commands while doing an interactive
+    # rebase. This has to be used with `--fixup` and/or `--squash` options for `git commit`.
+    # autoSquash = true
+
+    # Automatically stash current WD and stage when running rebase
+    # then you won't have to manually `git stash push` and `git stash pop`
+    # after and before your rebase.
+    autoStash = true
+
+# [rerere]
+    # If you like rerere, uncomment these
+    # autoupdate = true
+
+    # enabled = true
+
+[status]
+    # Display submodule rev change summaries in status
+    submoduleSummary = true
+
+    # Recursively traverse untracked directories to display all contents
+    showUntrackedFiles = all
+
+[tag]
+    # Sort tags as version numbers whenever applicable, so 1.10.2 is AFTER 1.2.0.
+    sort = version:refname
+
+[versionsort]
+    prereleaseSuffix = -pre
+    prereleaseSuffix = .pre
+    prereleaseSuffix = -beta
+    prereleaseSuffix = .beta
+    prereleaseSuffix = -rc
+    prereleaseSuffix = .rc
+
+[credential]
+	  helper = manager-core
+      interactive = auto
+      credentialStore = plaintext
+
+[credential "https://gitlab.com"]
+	provider = generic
+
+[include]
+    # Include aliases.
+    path = ./aliases
+
+    # Include extra configuration (if any).
+    path = ./local
+
+    # Default to personal configuration.
+    path = ./personal
+
+[includeIf "gitdir/i:**/dev/personal**/"]
+    # Force personal configuration if in personal directory.
+    path = ./personal
+
+[includeIf "gitdir/i:**/dev/work/**"]
+    # Force work configuration if in work directory.
+    path = ./work

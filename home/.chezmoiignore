@@ -9,20 +9,19 @@
 /**/*.gz
 LICENSE
 README.md
-key.txt.age
+/**/key.txt.age
 {{-  if ne .chezmoi.os "windows" }}
 /**/*.ps1
-/**/*.ps1.tmpl
 /**/*.bat
-/**/*.bat.tmpl
-/**/custom-pwsh-modules
-/**/powershell
-/**/windows_terminal
+.config/custom-pwsh-modules
+.config/powershell
+Documents
+AppData
 /**/micro
-{{-  end }}
+{{-  end -}}
 {{-  if ne .chezmoi.os "linux" }}
 /**/*.sh
 /**/*.sh.tmpl
 /**/environment.d
 /**/zsh
-{{-  end }}
+{{-  end -}}

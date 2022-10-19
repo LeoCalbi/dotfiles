@@ -22,38 +22,18 @@
 		https://github.com/LeoCalbi/dotfiles
 #>
 
-$windows_terminal = [PSCustomObject]@{
-	Name      = "Windows Terminal"
-	Src       = Join-Path -Path $Env:USERPROFILE -ChildPath "\.config\windows_terminal\"
-	Dst       = Join-Path -Path $Env:LOCALAPPDATA -ChildPath "\Packages\Microsoft.WindowsTerminal_8wekyb3d8bbwe\LocalState\"
-	Recursive = $true
-}
 $powershell = [PSCustomObject]@{
 	Name      = "System Powershell"
 	Src       = Join-Path -Path $Env:USERPROFILE -ChildPath "\.config\powershell"
-	Dst       = Join-Path -Path $Env:USERPROFILE -ChildPath "\Documents\WindowsPowershell\"
+	Dst       = Join-Path -Path $Env:USERPROFILE -ChildPath "\Documents\WindowsPowershell"
 	Recursive = $true
 }
 
 $powershell_core = [PSCustomObject]@{
 	Name      = "Powershell Core"
 	Src       = Join-Path -Path $Env:USERPROFILE -ChildPath "\.config\powershell\"
-	Dst       = Join-Path -Path $Env:USERPROFILE -ChildPath "\Documents\Powershell\"
+	Dst       = Join-Path -Path $Env:USERPROFILE -ChildPath "\Documents\Powershell"
 	Recursive = $true
-}
-
-$chocolatey_tools = [PSCustomObject]@{
-	Name      = "Chocolatey Tools"
-	Src       = Join-Path -Path $Env:USERPROFILE -ChildPath "\.config\chocolatey-tools\"
-	Dst       = Join-Path -Path $Env:ChocolateyToolsLocation -ChildPath "\BCURRAN3\"
-	Recursive = $true
-}
-
-$curl_settings = [PSCustomObject]@{
-	Name      = "Curl Settings"
-	Src       = Join-Path -Path $Env:USERPROFILE -ChildPath ".curlrc"
-	Dst       = Join-Path -Path $Env:USERPROFILE -ChildPath "_curlrc"
-	Recursive = $false
 }
 
 $myUtilities = [PSCustomObject]@{
@@ -62,12 +42,14 @@ $myUtilities = [PSCustomObject]@{
 	Dst       = Join-Path -Path $Env:USERPROFILE -ChildPath ".config\powershell\Modules\MyUtilities"
 	Recursive = $false
 }
+
 $gitStatusCachePoshClient = [PSCustomObject]@{
 	Name      = "GitStatusCachePoshClient"
 	Src       = Join-Path -Path $Env:USERPROFILE -ChildPath ".config\custom-psmodules\GitStatusCachePoshClient\GitStatusCachePoshClient"
 	Dst       = Join-Path -Path $Env:USERPROFILE -ChildPath ".config\powershell\Modules\GitStatusCachePoshClient"
 	Recursive = $false
 }
+
 $screenFetch = [PSCustomObject]@{
 	Name      = "ScreenFetch"
 	Src       = Join-Path -Path $Env:USERPROFILE -ChildPath ".config\custom-psmodules\ScreenFetch\ScreenFetch"
@@ -76,7 +58,7 @@ $screenFetch = [PSCustomObject]@{
 }
 
 
-$dst = $windows_terminal, $powershell, $powershell_core, $chocolatey_tools, $curl_settings, $myUtilities, $gitStatusCachePoshClient, $screenFetch
+$dst = $powershell, $powershell_core, $myUtilities, $gitStatusCachePoshClient, $screenFetch
 
 foreach ($d in $dst) {
 	if ( -not (Test-Path $d.Src)) {

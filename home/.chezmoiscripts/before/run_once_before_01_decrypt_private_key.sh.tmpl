@@ -1,9 +1,9 @@
 #!/bin/sh
 echo "Decrypting Age key..."
-if [ ! -f "${HOME}/key.txt" ]
+if [ ! -f "{{ .age_key_file_destination }}" ]
 then
-    age --decrypt --output "${HOME}/key.txt" "{{ .chezmoi.sourceDir }}/key.txt.age"
-    chmod 600 "${HOME}/key.txt"
+    age --decrypt --output "{{ .age_key_file_destination }}" "{{ .age_key_file_origin }}"
+    chmod 600 "{{ .age_key_file_destination }}"
     echo "...Decrypted age key.txt"
 else
     echo "...Age key already exists. Skipping decryption."

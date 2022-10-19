@@ -72,3 +72,11 @@ if ((Get-WindowsOptionalFeature -Online -FeatureName Microsoft-Hyper-V).State -n
 else {
 	Write-Output "Hyper-V features already enabled, skipping."
 }
+
+
+# Add system variables
+Write-Output "Adding system variables..."
+[System.Environment]::SetEnvironmentVariable("SOPS_AGE_KEY_FILE","$env:USERPROFILE\.config\sops\age\keys.txt","User")
+[System.Environment]::SetEnvironmentVariable("EDITOR","$env:ProgramFiles\Microsoft VS Code\bin\code.cmd","User")
+[System.Environment]::SetEnvironmentVariable("VISUAL","$env:ProgramFiles\Microsoft VS Code\bin\code.cmd","User")
+Write-Output "...Completed adding of system variables"

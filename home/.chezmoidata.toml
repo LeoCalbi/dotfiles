@@ -1,0 +1,2 @@
+age_key_file_destination = "{{ joinPath .chezmoi.homeDir `.config` `sops` `age` `key.txt` }}"
+age_key_file_origin = "{{ joinPath .chezmoi.sourceDir `dot_config` `sops` `age` `key.txt.age` }}"

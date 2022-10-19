@@ -1,0 +1,12 @@
+.gitconfig
+.gitcookies
+.gitignore
+.hgrc
+.ripgreprc
+.vim
+.vimrc
+.wgetrc
+.curlrc
+.zshrc
+.zshenv
+.condarc

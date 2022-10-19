@@ -1,15 +1,31 @@
-{{ if eq .chezmoi.os "windows" }}
+{{- if eq .chezmoi.os "windows" }}
 [".config/custom-pwsh-modules/MyUtilities"]
-    refreshPeriod = "168h"
+    refreshPeriod = "744h"
     type = "git-repo"
     url = "https://github.com/LeoCalbi/MyUtilities.git"
+    exact=true
 [".config/custom-pwsh-modules/GitStatusCachePoshClient"]
-    refreshPeriod = "168h"
+    refreshPeriod = "744h"
     type = "git-repo"
     url = "https://github.com/LeoCalbi/GitStatusCachePoshClient.git"
-
+    exact=true
 [".config/custom-pwsh-modules/ScreenFetch"]
-    refreshPeriod = "168h"
+    refreshPeriod = "744h"
     type = "git-repo"
     url = "https://github.com/LeoCalbi/ScreenFetch.git"
-{{ end }}
+    exact = true
+[".config/powershell/Apps/OoklaSpeedtest"]
+    type = "archive"
+    url = "https://install.speedtest.net/app/cli/ookla-speedtest-1.2.0-win64.zip"
+    exact = true
+[".config/powershell/Apps/WhoIs"]
+    type = "archive"
+    refreshPeriod = "4464h"
+    url = "https://download.sysinternals.com/files/WhoIs.zip"
+    exact = true
+[".config/powershell/Apps/btop4win"]
+    type = "archive"
+    refreshPeriod = "744h"
+    url = "https://github.com/aristocratos/btop4win/releases/download/latest/btop4win-LHM-x64.zip"
+    exact = true
+{{- end -}}

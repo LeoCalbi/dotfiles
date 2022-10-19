@@ -1,0 +1,9 @@
+# See https://www.ssh.com/ssh/config for more information.
+
+Host *
+	ForwardAgent no
+    ForwardX11 no
+    ForwardX11Trusted yes
+	# Keep the connection temporarily open by sending a data every few minutes.
+	ServerAliveCountMax 6
+	ServerAliveInterval 300

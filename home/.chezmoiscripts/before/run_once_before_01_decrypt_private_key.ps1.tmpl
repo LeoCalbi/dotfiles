@@ -2,12 +2,9 @@
 #                Decrypt age private key if it doesn't exist
 # ------------------------------------------------------------------------------
 Write-Output "Decrypting Age key..."
-$agePrivateKey = Join-Path -Path $Env:USERPROFILE -ChildPath "\key.txt"
-
-if (-not (Test-Path $agePrivateKey)) {
-    age --decrypt --output $agePrivateKey "{{ .chezmoi.sourceDir }}/key.txt.age"
+if (-not (Test-Path -Path "{{ .age_key_file_destination }}")) {
+    age --decrypt --output "{{ .age_key_file_destination }}" "{{ .age_key_file_origin}}"
     Write-Output "...Decrypted age key.txt"
-}else{
+} else {
     Write-Output "...Age key already exists. Skipping decryption."
 }
-Remove-Variable -Name "agePrivateKey"

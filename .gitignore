@@ -172,5 +172,10 @@ bh_unicode_properties.cache
 # https://packagecontrol.io/packages/sublime-github
 GitHub.sublime-settings
 
-home/dot_config/git/kantar
-home/dot_config/git/personal
+# Git user info
+git/work
+git/personal
+
+# Temporary decrypted files
+*.decrypted~*
+key.txt
